@@ -22,3 +22,17 @@ If you need to go inside the container you can use the exec command:
 
 # Enter the container
 `$ docker exec -it <container id> /bin/bash`
+
+
+## other stuff
+
+Couchbase reqs:
+- requires cmake installed:
+`brew install cmake`
+- requires node 16 for couchbase
+
+```docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
+```
+
+Step - 2 : Next, visit http://localhost:8091 on the host machine to see the Web Console to start Couchbase Server setup.
+
