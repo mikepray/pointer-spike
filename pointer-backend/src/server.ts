@@ -1,10 +1,14 @@
 import express, {Request, Response, NextFunction} from 'express';
-import issuesRoutes from './routes/issue';   // Route connected
+import issuesRoutes from './routes/issue';
+import { json } from 'body-parser';
 
 const PORT = 8080;
 
 //Create an app
 const app = express();
+
+// use json middleware from body-parser
+app.use(json());
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello world\n');
