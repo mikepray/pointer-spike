@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler } from 'express';
-import { connectToCouchbase, upsertIssueFromDb, getIssueFromDb, deleteIssueFromDb, replaceIssueInDb } from '../db/couchbase';
-import { Issue } from '../models/issue';
+import { connectToCouchbase, upsertIssueFromDb, getIssueFromDb, deleteIssueFromDb, replaceIssueInDb } from '../dao/issue.dao';
+import { Issue } from '../models/issue.model';
 import { Cluster, MutationResult } from 'couchbase';
 import { randomUUID } from 'crypto'
 import { couchbaseConnection } from '../server';

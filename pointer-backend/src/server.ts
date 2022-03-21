@@ -1,7 +1,7 @@
 import express, {Request, Response, NextFunction} from 'express';
-import issuesRoutes from './routes/issue';
+import issuesRoutes from './routes/issue.router';
 import { json } from 'body-parser';
-import { connectToCouchbase } from './db/couchbase';
+import { connectToCouchbase } from './dao/issue.dao';
 import { Cluster } from 'couchbase';
 
 const PORT = 8080;
