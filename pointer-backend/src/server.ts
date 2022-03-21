@@ -1,9 +1,13 @@
 import express, {Request, Response, NextFunction} from 'express';
 import issuesRoutes from './routes/issue';
 import { json } from 'body-parser';
+import { connectToCouchbase } from './db/couchbase';
+import { Cluster } from 'couchbase';
 
 const PORT = 8080;
 
+export let couchbaseConnection:Promise<Cluster>;
+couchbaseConnection = connectToCouchbase();
 //Create an app
 const app = express();
 

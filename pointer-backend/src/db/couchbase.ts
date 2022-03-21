@@ -1,6 +1,3 @@
-// sample 
-// run the couchbase docker image
-
 import {
     Bucket,
     Cluster,
@@ -9,66 +6,44 @@ import {
     GetResult,
     MutationResult,
   } from 'couchbase'
+import { Issue } from '../models/issue';
   
-  async function connectToDb() {
-    const cluster: Cluster = await connect('couchbase://localhost', {
-      username: 'Administrator',
-      password: 'blackboard',
-    })
-    // get a reference to our bucket
-    const bucket: Bucket = cluster.bucket('travel-sample')
-    // get a reference to a collection
-    const collection: Collection = bucket.scope('inventory').collection('airline')
-    // get a reference to the default collection, required for older Couchbase server versions
-    const collection_default = bucket.defaultCollection()
-    const upsertDocument = async (doc: Document) => {
-        try {
-            // key will equal: "airline_8091"
-            const key: string = `${doc.type}_${doc.id}`
-            const result: MutationResult = await collection.upsert(key, doc)
-            console.log('Upsert Result: ')
-            console.log(result)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    await upsertDocument(airline)   
-
-    const getAirlineByKey = async (key: string) => {
-        try {
-          const result: GetResult = await collection.get(key)
-          console.log('Get Result: ')
-          console.log(result)
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      await getAirlineByKey('airline_8091')
-    
+export function connectToCouchbase(): Promise<Cluster> {
+    return connect("couchbase://localhost", 
+    {
+      "username": "Administrator",
+      "password": "blackboard",
+    });
 }
 
+export function upsertIssueFromDb(clusterPromise: Promise<Cluster>, issue: Issue): Promise<MutationResult> {
+    const key: string = issue.id;
+   
+    return clusterPromise.then(cluster => {
+        const collection: Collection = cluster.bucket("pointer").scope("_default").collection("issues");
+        return collection.upsert(key, issue)
+    });
+}
 
-interface Document {
-    type: string
-    id: number
-    callsign: string
-    iata: string
-    icao: string
-    name: string
-  }
+export function replaceIssueInDb(clusterPromise: Promise<Cluster>, issue: Issue): Promise<MutationResult> {
+    const key: string = issue.id;
+   
+    return clusterPromise.then(cluster => {
+        const collection: Collection = cluster.bucket("pointer").scope("_default").collection("issues");
+        return collection.replace(key, issue)
+    });
+}
 
-  const airline: Document = {
-    type: 'airline',
-    id: 8091,
-    callsign: 'CBS',
-    iata: 'IATA',
-    icao: 'ICAO',
-    name: 'Couchbase Airways',
-  }
+export function getIssueFromDb(clusterPromise: Promise<Cluster>, issueId: string): Promise<GetResult> {
+    return clusterPromise.then(cluster => {
+        const collection: Collection = cluster.bucket("pointer").scope("_default").collection("issues");
+        return collection.get(issueId)
+    });
+}
 
-  connectToDb().catch((err) => {
-    console.log('ERR:', err)
-    process.exit(1)
-  })
-  .then(() => process.exit(0))
+export function deleteIssueFromDb(clusterPromise: Promise<Cluster>, issueId: string) {
+    return clusterPromise.then(cluster => {
+        const collection: Collection = cluster.bucket("pointer").scope("_default").collection("issues");
+        return collection.remove(issueId)
+    });
+}
