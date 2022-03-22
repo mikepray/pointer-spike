@@ -5,6 +5,7 @@ const Room = () => {
     let params = useParams();
 
     return <>
+        <h1>You're in Room {params.roomId}!</h1>
         <SimpleGrid cols={6}>
             <Button color="red" variant="light" size="xl">1</Button>
             <Button color="red" variant="light" size="xl">2</Button>
@@ -13,7 +14,6 @@ const Room = () => {
             <Button color="red" variant="light" size="xl">8</Button>
             <Button color="red" variant="light" size="xl">13</Button>
         </SimpleGrid>
-        <h1>You're in Room {params.roomId}!</h1>
     </>
 };
 
