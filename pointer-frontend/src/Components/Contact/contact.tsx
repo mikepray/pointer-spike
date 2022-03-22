@@ -1,5 +1,25 @@
+import { useEffect, useState } from "react";
+
 const Contact = () => {
-    return <>mike@mikepray.dev</>
+  const [msg, setMsg] = useState("");
+
+  const getApiData = async () => {
+    const response = await fetch(
+      "/issue/1"
+    ).then((response) => response.json());
+
+    // update the state
+    setMsg(response);
   };
-  
-  export default Contact;   
+
+    useEffect(() => {
+      getApiData();
+    }, []);
+
+    return <>
+      
+      mike@mikepray.dev</>
+};
+
+export default Contact;
+
