@@ -10,16 +10,17 @@ import Contact from './Components/Contact/contact';
 import JoinRoom from './Components/JoinRoom/JoinRoom';
 import NoPage from './Components/NoPage/noPage';
 import Room from './Components/Room/Room';
+import CreateRoom from './Components/CreateRoom/CreateRoom';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={ <App/> }>
+          <Route path="create" element={ <CreateRoom /> } />
           <Route path="contact" element={ <Contact /> } />
-          <Route path="room" element={ <JoinRoom /> }>
-            <Route path=":roomId" element={ <Room />} />
-          </Route>
+          <Route path="room" element={ <JoinRoom />} />
+          <Route path="room/:roomId" element={ <Room />} />
           <Route path="*" element={ <NoPage />} />
         </Route>
       </Routes>

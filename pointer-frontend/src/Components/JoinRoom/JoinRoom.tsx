@@ -1,13 +1,29 @@
-import { Anchor, Box, Button, Group } from "@mantine/core";
+import { Anchor, Box, Button, Group, SimpleGrid, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const JoinRoom = () => {
-    return <>
-        <Anchor component={Link} to="/room/1" key={1}>
-            Join Room 1
-        </Anchor>
+    const [roomId, setValue] = useState('');
 
-        <Button variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }}>Lime green</Button>
+    return <>
+        <SimpleGrid cols={1}>
+            <TextInput 
+                label="Join Room" 
+                description="Enter Room Number to Join"
+                value={roomId} 
+                onChange={(event) => setValue(event.currentTarget.value)}
+            />
+            <Button 
+                variant="gradient"
+                gradient={{ from: 'teal', to: 'lime', deg: 105 }} 
+                uppercase 
+                size="xl" 
+                component={Link} 
+                to={`/room/${roomId}`}
+            >
+                Join!
+            </Button>
+        </SimpleGrid>   
 
         <Outlet />
     </>
