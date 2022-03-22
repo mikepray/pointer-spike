@@ -1,3 +1,4 @@
+import { Anchor } from "@mantine/core";
 import { Outlet, Link } from "react-router-dom";
 
 const Layout = () => {
@@ -6,6 +7,7 @@ const Layout = () => {
       <nav>
         <ul>
           <li>
+            
             <Link to="/">Join a Room</Link>
           </li>
           <li>

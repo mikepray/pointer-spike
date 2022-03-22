@@ -1,28 +1,47 @@
 import React from 'react';
-import './App.css';
-import { Route, Routes } from 'react-router';
+import { Outlet, Route, Routes } from 'react-router';
 import NoPage from '../NoPage/noPage';
 import Layout from '../Layout/layout';
 import Contact from '../Contact/contact';
 
 import Room from '../Room/Room';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import JoinRoom from '../JoinRoom/JoinRoom';
+import { Anchor, AppShell, Header, MantineProvider, Navbar } from '@mantine/core';
 
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<JoinRoom />} />
-          <Route path="room" element={<Room />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-   </>
+
+      <MantineProvider theme={{ colorScheme: 'light' }}>
+        <AppShell
+          padding="md"
+          navbar={
+            <Navbar width={{ base: 300 }} height={500} p="xs">
+              <Navbar.Section mt="xs">
+                <Anchor component={Link} to="/room">
+                  Join a Room
+                </Anchor>
+              </Navbar.Section>
+              <Navbar.Section mt="xs">
+                <Anchor component={Link} to="/contact">
+                  Contact Us
+                </Anchor>
+              </Navbar.Section>
+            </Navbar>
+          }
+          header={<Header height={60} p="xs">{<>Test</>}</Header>}
+        // styles={(theme) => ({
+        //   main: { backgroundColor: theme.colorScheme === 'light' ? theme.colors.dark[8] : theme.colors.gray[0] },
+        // })}
+        >{
+            <Outlet />
+          }
+        </AppShell>
+      </MantineProvider>
+
+    </>
+
   );
 }
 
