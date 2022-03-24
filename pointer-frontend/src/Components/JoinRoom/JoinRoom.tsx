@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 
 const JoinRoom = () => {
     const [roomId, setValue] = useState('');
-
+    
     return <>
         <SimpleGrid cols={1}>
             <TextInput 
