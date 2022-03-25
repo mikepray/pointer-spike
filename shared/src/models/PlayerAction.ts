@@ -1,15 +1,15 @@
 export class PlayerAction {
     playerUid: string
-    message: string | undefined
-    constructor(playerUid: string, message: string = "") {
+    actionName: ActionName
+    actionValue: string | undefined
+    constructor(playerUid: string, actionName:ActionName, actionValue: string = "") {
        this.playerUid = playerUid;
-       this.message = message;
+       this.actionName = actionName;
+       this.actionValue = actionValue;
    }
 }
 
-export class Msg {
-    text: string
-    constructor(text:string) {
-        this.text = text;
-    }
+export enum ActionName {
+    NICKNAME,
+    ESTIMATION_SELECTION
 }

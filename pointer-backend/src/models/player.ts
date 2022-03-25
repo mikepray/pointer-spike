@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws';
 
-export class Client {
+export class Player {
     uid: string;
     webSocketClient: WebSocket;
     constructor(uid:string, webSocketClient: WebSocket) {

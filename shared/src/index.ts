@@ -1,2 +1,3 @@
 export { PlayerJoin } from './models/PlayerJoin'
-export { PlayerAction, Msg } from './models/PlayerAction'
+export { PlayerAction, ActionName } from './models/PlayerAction'
+export { Message } from './models/Message'

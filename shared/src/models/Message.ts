@@ -1,4 +1,4 @@
-/*import { PlayerAction } from "./PlayerAction";
+import { PlayerAction } from "./PlayerAction";
 import { PlayerJoin } from "./PlayerJoin";
 
 export class Message {
@@ -9,8 +9,4 @@ export class Message {
         this.playerAction = playerAction;
     }
 
-}*/
-
-export class Message {
-    
 }

@@ -1,9 +1,9 @@
 import { randomUUID } from "crypto";
 import { IncomingMessage } from "http";
 import { WebSocketServer, RawData, WebSocket } from "ws";
-import { Client } from "../models/client.model";
+import { Player } from "../models/player";
 import { Room } from "../models/room.model";
-import { PlayerJoin, PlayerAction, Msg } from "pointer-shared";
+import { PlayerJoin, PlayerAction, Message, ActionName } from "pointer-shared";
 
 export const manageRoom = (): WebSocketServer => {
 
@@ -27,16 +27,24 @@ export const manageRoom = (): WebSocketServer => {
 };
 
 const onMessage = (ws: WebSocket, message: RawData, rooms: Map<string, Room>) => {
-    console.log(`player message ${message}`);
-
+    
     try {
         const playerMessage = JSON.parse(message.toString());
+        
+        // assume the incoming message is a Message
+        if (playerMessage as Message) {
+            // if the playerJoin property exists
+            if ((playerMessage as Message)?.playerJoin) {
+                console.log(`player joining room ${playerMessage.playerJoin.roomId}`);
 
-        if (playerMessage as PlayerJoin) {
-            joinRoom(ws, rooms, playerMessage);
-        } else if (playerMessage as PlayerAction) {
-            const playerMessageCast = playerMessage as PlayerAction
-            console.log(playerMessageCast)
+                joinRoom(ws, rooms, playerMessage.playerJoin);
+            }
+            // if the playerAction property exists
+            if ((playerMessage as Message)?.playerAction) {
+                console.log(`player action ${playerMessage.playerAction.playerUid}, ${playerMessage.playerAction.actionName.toString()}`);
+
+                takeAction(ws, rooms, playerMessage.playerAction);
+            }
         }
     } catch {
         console.log('unrecognized message');
@@ -46,37 +54,35 @@ const onMessage = (ws: WebSocket, message: RawData, rooms: Map<string, Room>) =>
 
 const joinRoom = (ws: WebSocket, rooms: Map<string, Room>, playerJoin: PlayerJoin) => {
 
-    console.log('joining room');
     if (playerJoin?.roomId) {
         if (!rooms.get(playerJoin.roomId)) {
+            // if the room doesn't exist, create it.
             console.log(`Creating room ${playerJoin.roomId}`);
             rooms.set(playerJoin.roomId, new Room(playerJoin.roomId));
         }
-    }
 
-    const room = rooms.get(playerJoin.roomId);
-
-    if (room?.clients !== undefined) {
-        const newClient = new Client(randomUUID(), ws);
-        room?.clients?.push(newClient)
+        // create a player
+        const newPlayer = new Player(randomUUID(), ws);
         
-        playerJoin.uid = newClient.uid;
-        
-        // ws.send(JSON.stringify(new PlayerAction('test')));
+        // get the room
+        const room = rooms.get(playerJoin.roomId);
 
-        room?.clients?.forEach(client => {
-            // client.webSocketClient.send('someone joined the room');
-        });
+        // add the player to the room
+        room?.clients?.push(newPlayer);
+        
+        // get the uid from the new player, and assign it to the player join message
+        playerJoin.uid = newPlayer.uid;
+
+        // send a message back to the player who just joined that includes the uid
+        ws.send(JSON.stringify(new Message(playerJoin)));
+        
     }
-    
 }
-/*
-
-
-
-
+const takeAction = (ws: WebSocket, rooms: Map<string, Room>, playerAction: PlayerAction) => {
+    if (playerAction.playerUid && playerAction?.actionName) {
+        if (playerAction.actionName.toString() === ActionName.NICKNAME.toString()) {
 
         }
-
     }
-}*/
+}
+
