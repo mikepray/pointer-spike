@@ -1,11 +1,11 @@
 {
-    "compilerOptions": {
-      "module": "esnext",
-      "target": "es5",
-      "declaration": true,
-      "outDir": "./dist"
-    },
-    "include": [
-      "src/**/*"
-    ]
-  }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

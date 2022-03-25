@@ -10,6 +10,7 @@ import internal, { Duplex } from 'stream';
 import { Client } from './models/client.model';
 import { randomUUID } from 'crypto';
 import { manageRoom } from './controllers/room.controller';
+import { Msg, PlayerAction } from 'pointer-shared';
 
 const PORT = 8080;
 
@@ -36,6 +37,7 @@ const wss = manageRoom();
 
 server.on('upgrade', function upgrade(request: IncomingMessage, socket: Duplex, head: Buffer): void {
     console.log('upgrading...')
+    new PlayerAction("test");
     if (request !== undefined) {
         if (request.url === '/socket') {
             wss.handleUpgrade(request, socket, head, function done(ws) {

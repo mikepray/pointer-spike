@@ -1,8 +1,6 @@
 # Pointer Shared
 
-```
-cd ~/projects/node-redis    # go into the package directory
-npm link                    # creates global link
-cd ~/projects/node-bloggy   # go into some other package directory.
-npm link redis              # link-install the package
-```
+## Running:
+Run `tsc --watch` in each top-level directory. Run `npm start` in `pointer-backend` and `pointer-frontend`
+
+Shared library is linked with `npm link ../shared` (run in the pointer-frontend and -backend folders). It's not published to npm.

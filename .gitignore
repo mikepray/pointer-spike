@@ -2,4 +2,4 @@ pointer-backend/node_modules
 pointer-backend/dist
 pointer-backend/.DS_Store
 shared/node_modules
-shared/package-lock.json
+shared/dist
