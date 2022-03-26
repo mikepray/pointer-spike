@@ -13,7 +13,7 @@ export const manageRoom = (): WebSocketServer => {
 
     wss.on('connection', function (ws, request: IncomingMessage) {
         console.log('Connection upgraded!');
-
+// TODO use a map of uid:player, and another map of roomid:players
         ws.on('message', function (message: RawData) {
             onMessage(ws, message, rooms);
         });
@@ -81,7 +81,9 @@ const joinRoom = (ws: WebSocket, rooms: Map<string, Room>, playerJoin: PlayerJoi
 const takeAction = (ws: WebSocket, rooms: Map<string, Room>, playerAction: PlayerAction) => {
     if (playerAction.playerUid && playerAction?.actionName) {
         if (playerAction.actionName.toString() === ActionName.NICKNAME.toString()) {
-
+            rooms.forEach(room => {
+                room.clients.forEach
+            })
         }
     }
 }
