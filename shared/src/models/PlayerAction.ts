@@ -11,5 +11,6 @@ export class PlayerAction {
 
 export enum ActionName {
     NICKNAME,
-    ESTIMATION_SELECTION
+    ESTIMATION_SELECTION,
+    PLAYER_JOINED
 }

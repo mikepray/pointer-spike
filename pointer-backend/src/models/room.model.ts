@@ -1,10 +1,8 @@
-import { Player } from "./player";
-
 export class Room {
     roomId: string;
-    clients: Array<Player>;
-    constructor(roomId: string, clients = new Array<Player>()) {
+    playerUids: Array<string>;
+    constructor(roomId: string, playerUids = new Array<string>()) {
         this.roomId = roomId;
-        this.clients = clients;
+        this.playerUids = playerUids;
     }
 }
