@@ -20,7 +20,7 @@ ReactDOM.render(
           <Route path="create" element={ <CreateRoom /> } />
           <Route path="contact" element={ <Contact /> } />
           <Route path="room" element={ <JoinRoom />} />
-          <Route path="room/:roomId" element={ <Room />} />
+          <Route path="room/:roomId/name/:name" element={ <Room />} />
           <Route path="*" element={ <NoPage />} />
         </Route>
       </Routes>

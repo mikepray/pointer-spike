@@ -1,3 +1,5 @@
 export { PlayerJoin } from './models/PlayerJoin'
 export { PlayerAction, ActionName } from './models/PlayerAction'
-export { Message } from './models/Message'
+export { PlayerMessage } from './models/PlayerMessage'
+export { RoomState } from './models/RoomState'
+export { BroadcastMessage } from './models/BroadcastMessage'

@@ -1,14 +1,14 @@
 import { SimpleGrid, Button, TextInput, Badge, Container, Group, Space, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Message, PlayerAction, PlayerJoin, ActionName } from "pointer-shared";
+import { PlayerMessage, PlayerAction, PlayerJoin, ActionName, RoomState, BroadcastMessage } from "pointer-shared";
 import { v4 as uuidv4 } from "uuid";
 import SetName from "./SetName";
 
 const Room = () => {
     let params = useParams();
     const [ws, setWebSocket] = useState<WebSocket>();
-    const [name, setName] = useState("Visitor");
+    const [roomState, setRoomState] = useState<RoomState>();
     const [uid, setUid] = useState("");
 
     const [oneEstPlayers, setOneEstPlayers] = useState<string[]>([])
@@ -26,26 +26,33 @@ const Room = () => {
         if (ws !== undefined) {
             ws.onopen = () => {
                 if (params.roomId !== undefined) {
-                    ws.send(JSON.stringify(new Message(new PlayerJoin(params.roomId))));
+                    ws.send(JSON.stringify(new PlayerMessage(new PlayerJoin(params.roomId))));
                 }
             };
         }
     }, [ws]);
 
     const sendAction = (action: ActionName, actionValue: string) => {
-        ws?.send((JSON.stringify(new Message(undefined, new PlayerAction(uid, action, actionValue)))));
+        ws?.send((JSON.stringify(new PlayerMessage(undefined, new PlayerAction(uid, action, actionValue)))));
     }
 
     if (ws !== undefined) {
         ws.onmessage = event => {
             console.log(`onmessage`);
             const message = JSON.parse(event.data)
-            if (message as Message) {
+            if (message as BroadcastMessage && message?.roomState) {
+                console.log(`setting room state ${JSON.stringify(message.roomState)}`);
+                setRoomState(message.roomState);
+            }
+            if (message as PlayerMessage) {
                 if (message?.playerJoin?.uid !== undefined) {
                     // save back the player uid assigned by the server
                     console.log(`Handshake successful, joined room: ${message.playerJoin.roomId}, UID: ${message.playerJoin.uid}`)
                     setUid(message.playerJoin.uid);
                 }
+
+
+                // TODO refactor all the below to use the server-generated state
                 if (message?.broadcastPlayerAction !== undefined) {
                     console.log(`Received a broadcast message: ${JSON.stringify(message?.broadcastPlayerAction)}`);
                     if (message?.broadcastPlayerAction.actionName.toString() === ActionName.ESTIMATION_SELECTION.toString()) {
@@ -101,7 +108,9 @@ const Room = () => {
     // return [...oneEst]; // spread the old array to a new array to update the reference so that React will re-render effected components
     // TODO Why does the spread operator code above duplicate entries in the list?
     return <>
-        <Text>You're in Room {params.roomId}!</Text>
+        <Text>Hi {params.name}, you're in Room {params.roomId}!</Text>
+        <Space h="lg" />
+        
 
         <SimpleGrid cols={6}>
             <Group>
@@ -155,18 +164,7 @@ const Room = () => {
 
         </SimpleGrid>
 
-        <Space h="lg" />
 
-        <Container size="xs" px="s">
-            <Group direction="column">
-                <TextInput
-                    label="Enter nickname"
-                    value={name}
-                    onChange={(event) => setName(event.currentTarget.value)}
-                />
-                <Button onClick={() => sendAction(ActionName.NICKNAME, name)}>Set Nickname</Button>
-            </Group>
-        </Container>
     </>
 };
 
