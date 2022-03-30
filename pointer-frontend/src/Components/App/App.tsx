@@ -1,41 +1,53 @@
-import React from 'react';
-import { Outlet, Route, Routes } from 'react-router';
-import NoPage from '../NoPage/noPage';
-import Layout from '../Layout/layout';
-import Contact from '../Contact/contact';
+import { useState } from 'react';
+import { Outlet } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Anchor, AppShell, Burger, Header, MantineProvider, MediaQuery, Navbar, Text } from '@mantine/core';
 
-import Room from '../Room/Room';
-import { BrowserRouter, Link } from 'react-router-dom';
-import JoinRoom from '../JoinRoom/JoinRoom';
-import { Anchor, AppShell, Header, MantineProvider, Navbar } from '@mantine/core';
-import NavHeader from '../NavHeader/NavHeader';
-import { Hamburger } from '../Burger/Burger';
+const App = () => {
+  const [burgerOpened, setBurgerOpened] = useState(false);
 
-function App() {
   return (
-    <>
-      <MantineProvider theme={{ colorScheme: 'light' }}>
-        <Hamburger />
-        <AppShell
-          padding="md"
-          navbar={
-            <Navbar width={{ base: 300 }} height={500} p="xs">
-              <Navbar.Section mt="xs">
-                <Anchor component={Link} to="/room">
-                  Join a Room
-                </Anchor>
-              </Navbar.Section>
-            </Navbar>
-          }
-          header={<Header height={60} p="xs">{<NavHeader />}</Header>}
-        >{
-            <Outlet />
-          }
-        </AppShell>
-      </MantineProvider>
+    <MantineProvider theme={{ colorScheme: 'light' }}>
 
-    </>
+      <AppShell
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        fixed
+        padding="md"
+        navbar={
+          <Navbar
+            p="md"
+            hiddenBreakpoint="sm"
+            hidden={!burgerOpened}
+            width={{ sm: 100, lg: 300, md: 200}}
+            >
+            <Navbar.Section mt="xs">
+              <Anchor component={Link} to="/room">
+                Join a Room
+              </Anchor>
+            </Navbar.Section>
+          </Navbar>
+        }
+        header={
+          <Header height={70} p="md">
+            <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+              <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                <Burger
+                  opened={burgerOpened}
+                  onClick={() => setBurgerOpened((o) => !o)}
+                  size="sm"
+                  mr="xl"
+                />
+              </MediaQuery>
 
+              <Text>Planning Poker</Text>
+            </div>
+          </Header>
+        }
+      >
+        <Outlet />
+      </AppShell>
+    </MantineProvider>
   );
 }
 

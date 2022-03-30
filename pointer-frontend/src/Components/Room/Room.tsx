@@ -1,9 +1,9 @@
-import { SimpleGrid, Button, TextInput, Badge, Container, Group, Space, Text, Stack, Grid } from "@mantine/core";
+import { SimpleGrid, Button, Space, Text, Grid } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "pointer-shared";
-import { Estimate } from "./Estimate";
-import { NameModal } from "./NameModal";
+import { Estimate } from "../Estimate/Estimate";
+import { NameModal } from "../NameModal/NameModal";
 
 
 const Room = () => {
@@ -31,9 +31,9 @@ const Room = () => {
     }, [ws, params.roomId]);
 
     useEffect(() => {
-       if (uid !== "") {
-           updatePlayer();
-       }
+        if (uid !== "") {
+            updatePlayer();
+        }
     }, [estimation]);
 
     const updatePlayer = () => {
@@ -49,8 +49,6 @@ const Room = () => {
                 estimation: estimation
             })
         });
-
-
     }
 
     const clearAllEstimates = () => {

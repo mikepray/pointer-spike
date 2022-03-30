@@ -33,6 +33,7 @@ export const NameModal = (props: NameModalProperties) => {
             size="md"
             placeholder="Agile Wizard"
             disabled={props.playerName === ""}
+            type="submit"
             onClick={() => {props.setNameModalOpened(false)}}
         >Ok</Button>
 

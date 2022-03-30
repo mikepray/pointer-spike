@@ -1,4 +1,4 @@
-import { Anchor, Box, Button, Grid, Group, SimpleGrid, Stack, TextInput } from "@mantine/core";
+import { Button, Grid, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
