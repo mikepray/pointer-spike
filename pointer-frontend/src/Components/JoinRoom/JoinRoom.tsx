@@ -1,39 +1,52 @@
-import { Button, Grid, TextInput } from "@mantine/core";
-import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Button, Center, Container, Grid, Group, Space, Stack, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const JoinRoom = () => {
-    const [roomId, setRoomId] = useState("");
+
+    let navigate = useNavigate();
+
+    const handleSubmit = (values: typeof form.values) => {
+        return navigate(`/room/${form.values.roomName}`);
+    }
+
+    const form = useForm({
+        initialValues: {
+            roomName: ""
+        },
+        validate: {
+            roomName: (value: string) => value === "" ? "Room name is required" : null
+        }
+    });
 
     return <>
-        <Grid>
-            <Grid.Col>
-                <TextInput
-                    label="Join Room"
-                    description="Enter room name or number to join. If it doesn't exist, it will be created."
-                    value={roomId}
-                    required
-                    size="lg"
-                    onChange={(event) => setRoomId(event.currentTarget.value)}
-                />
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+            <Container size="sm">
+                <Stack>
+                    <TextInput
+                        label="Join Room"
+                        description="Enter room name or number to join. If it doesn't exist, it will be created."
+                        required
+                        size="lg"
+                        {...form.getInputProps("roomName")}
+                    />
+                    <Space w="xl" />
+                    <Group position="right">
+                        <Button
+                            variant="gradient"
+                            gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+                            uppercase
+                            size="md"
+                            type="submit"
+                        >
+                            Join!
+                        </Button>
+                    </Group>
 
-            </Grid.Col>
-            <Grid.Col>
-                <Button
-                    variant="gradient"
-                    gradient={{ from: 'teal', to: 'lime', deg: 105 }}
-                    uppercase
-                    size="md"
-                    component={Link}
-                    to={`/room/${roomId}`}
-                >
-                    Join!
-                </Button>
-
-                <Outlet />
-
-            </Grid.Col>
-        </Grid>
+                </Stack>
+            </Container>
+            <Outlet />
+        </form>
     </>
 };
 

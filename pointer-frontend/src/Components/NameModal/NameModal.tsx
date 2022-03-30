@@ -1,4 +1,5 @@
-import { Button, Modal, Space, TextInput } from '@mantine/core';
+import { Button, Group, Modal, Space, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 
 interface NameModalProperties {
     playerName: string;
@@ -8,34 +9,50 @@ interface NameModalProperties {
 }
 
 export const NameModal = (props: NameModalProperties) => {
-    return <Modal
-        opened={props.opened}
-        onClose={() => props.setNameModalOpened(false)}
-        title="Introduce yourself!"
-        withCloseButton={false}
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-        trapFocus={true}
-    >
 
-        <TextInput
-            label="Nickname"
-            description="Enter a name to show others"
-            required
-            value={props.playerName}
-            onChange={(event) => props.setName(event.currentTarget.value)}
-        />
-        <Space h="md" />
-        <Button
-            variant="gradient"
-            gradient={{ from: 'teal', to: 'lime', deg: 105 }}
-            uppercase
-            size="md"
-            placeholder="Agile Wizard"
-            disabled={props.playerName === ""}
-            type="submit"
-            onClick={() => {props.setNameModalOpened(false)}}
-        >Ok</Button>
+    const handleSubmit = (values: typeof form.values) => {
+        props.setName(values.playerName);
+        props.setNameModalOpened(false);
+    }
 
-    </Modal>
+    const form = useForm({
+        initialValues: {
+            playerName: ""
+        },
+        validate: {
+            playerName: (value: string) => value === "" ? "Name is required" : null
+        }
+    });
+
+    return <>
+        <Modal
+            opened={props.opened}
+            onClose={() => props.setNameModalOpened(false)}
+            title="Introduce yourself!"
+            withCloseButton={false}
+            closeOnClickOutside={false}
+            closeOnEscape={false}
+            trapFocus={true}
+        >
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <TextInput
+                    label="Nickname"
+                    description="Enter a name to show others"
+                    required
+                    placeholder="Agile Wizard"
+                    {...form.getInputProps("playerName")}
+                />
+                <Space h="md" />
+                <Group position="right" mt="md">
+                    <Button
+                        variant="gradient"
+                        gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+                        uppercase
+                        size="md"
+                        type="submit"
+                    >Submit</Button>
+                </Group>
+            </form>
+        </Modal>
+    </>
 };

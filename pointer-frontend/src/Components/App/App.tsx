@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router';
 import { Link } from 'react-router-dom';
-import { Anchor, AppShell, Burger, Header, MantineProvider, MediaQuery, Navbar, Text } from '@mantine/core';
+import { Anchor, AppShell, Burger, Center, Header, MantineProvider, MediaQuery, Navbar, Space, Text, ThemeIcon } from '@mantine/core';
+import SaiLogo from './SAI_temp-logo_dteal.svg'
+import MeetupLogo from './Turq_Meetups_1.svg'
+import './App.css';
 
 const App = () => {
   const [burgerOpened, setBurgerOpened] = useState(false);
 
   return (
     <MantineProvider theme={{ colorScheme: 'light' }}>
-
       <AppShell
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
@@ -19,11 +21,18 @@ const App = () => {
             p="md"
             hiddenBreakpoint="sm"
             hidden={!burgerOpened}
-            width={{ sm: 100, lg: 300, md: 200}}
-            >
+            width={{ sm: 100, lg: 300, md: 200 }}
+          >
             <Navbar.Section mt="xs">
               <Anchor component={Link} to="/room">
+                {/* <img className="Meetup-icon" src={MeetupLogo} /> */}
+                <Center>
+                <ThemeIcon variant="outline" size="lg">
+                  <img src={MeetupLogo} />
+                </ThemeIcon>
+                <Space w="xs" />
                 Join a Room
+                </Center>
               </Anchor>
             </Navbar.Section>
           </Navbar>
@@ -39,8 +48,9 @@ const App = () => {
                   mr="xl"
                 />
               </MediaQuery>
-
-              <Text>Planning Poker</Text>
+              <img className="App-logo" src={SaiLogo} />
+              <Space w="md" />
+              <Text size="xl">Planning Poker</Text>
             </div>
           </Header>
         }

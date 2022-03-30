@@ -1,4 +1,4 @@
-import { Stack, Button, Group, Badge, Center } from "@mantine/core";
+import { Stack, Button, Group, Badge, Center, Avatar } from "@mantine/core";
 import { RoomStatePlayer } from "pointer-shared/dist/models/RoomState";
 
 interface EstimateProperties {
@@ -10,6 +10,27 @@ interface EstimateProperties {
 }
 
 export const Estimate = (props: EstimateProperties) => {
+
+    const colors = [
+        "blue",
+        "red",
+        "lime",
+        "indigo",
+        "orange",
+        "yellow",
+        "green",
+        "cyan",
+        "pink",
+        "grape",
+        "black",
+        "violet",
+        "teal",
+    ];
+
+    const getColor = (index: number) => {
+        return colors[index % colors.length];
+    };
+
     return <>
         <Stack justify="flex-start">
             <Button
@@ -21,15 +42,14 @@ export const Estimate = (props: EstimateProperties) => {
                 }}>
                 {props.estimate}
             </Button>
-            <Group>
-            <Center>
-                {props?.players?.map((player: RoomStatePlayer) => {
-                    return player.estimate === props.estimate &&
-                        <Badge key={player.uid}>{player.name}</Badge>
+
+            {props?.players?.map((player: RoomStatePlayer, index) => {
+                return player.estimate === props.estimate &&
+                    <Badge key={player.uid} color={getColor(index)} variant="filled">{player.name}</Badge>
+
                 }
-                )}
-                </Center>
-            </Group>
+            )}
+
         </Stack>
     </>
 }

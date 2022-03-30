@@ -1,4 +1,4 @@
-import { SimpleGrid, Button, Space, Text, Grid } from "@mantine/core";
+import { SimpleGrid, Button, Space, Text, Grid, Group } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "pointer-shared";
@@ -81,25 +81,24 @@ const Room = () => {
 
     return <>
         <NameModal opened={nameModalOpened} setNameModalOpened={setNameModalOpened} playerName={name} setName={setName} />
-        <Grid>
-            <Grid.Col span={3}>
-                <Text>Hi {name}, you're in Room {params.roomId}!</Text>
-            </Grid.Col>
-            <Grid.Col span={2}>
-                <Button
-                    variant="gradient"
-                    gradient={{ from: 'orange', to: 'red' }}
-                    onClick={() => clearAllEstimates()}>Clear All Estimates</Button>
-            </Grid.Col>
-        </Grid>
+
+        <Group position="apart">
+            <Text>Hi {name}, you're in Room {params.roomId}!</Text>
+
+            <Button
+                variant="gradient"
+                gradient={{ from: 'orange', to: 'red' }}
+                onClick={() => clearAllEstimates()}>Clear All Estimates</Button>
+        </Group>
+
         <Space h="lg" />
         <SimpleGrid cols={6}>
-            <Estimate estimate="1" players={roomState?.players} gradientFrom="cyan" gradientTo="indigo" setEstimation={setEstimation} />
-            <Estimate estimate="2" players={roomState?.players} gradientFrom="indigo" gradientTo="cyan" setEstimation={setEstimation} />
-            <Estimate estimate="3" players={roomState?.players} gradientFrom="indigo" gradientTo="cyan" setEstimation={setEstimation} />
-            <Estimate estimate="5" players={roomState?.players} gradientFrom="indigo" gradientTo="cyan" setEstimation={setEstimation} />
-            <Estimate estimate="8" players={roomState?.players} gradientFrom="indigo" gradientTo="cyan" setEstimation={setEstimation} />
-            <Estimate estimate="13" players={roomState?.players} gradientFrom="indigo" gradientTo="cyan" setEstimation={setEstimation} />
+            <Estimate estimate="1" players={roomState?.players} gradientFrom="#146eff" gradientTo="#1c14ff" setEstimation={setEstimation} />
+            <Estimate estimate="2" players={roomState?.players} gradientFrom="#1c14ff" gradientTo="#4b14ff" setEstimation={setEstimation} />
+            <Estimate estimate="3" players={roomState?.players} gradientFrom="#4b14ff" gradientTo="#6e14ff" setEstimation={setEstimation} />
+            <Estimate estimate="5" players={roomState?.players} gradientFrom="#6e14ff" gradientTo="#8e14ff" setEstimation={setEstimation} />
+            <Estimate estimate="8" players={roomState?.players} gradientFrom="#8e14ff" gradientTo="#ad14ff" setEstimation={setEstimation} />
+            <Estimate estimate="13" players={roomState?.players} gradientFrom="#ad14ff" gradientTo="#e014ff" setEstimation={setEstimation} />
         </SimpleGrid>
         <Space h="lg" />
     </>
