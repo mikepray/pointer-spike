@@ -34,6 +34,10 @@ const Contact = () => {
   }
 
   return <>
+   <div>
+     {["1", "2"].map(s => { 
+               return <div>hi</div>
+            })}</div>
     <div>{msg}</div>
     <div><Button onClick={() => setCount(previous => previous + 1)}>{clicked}</Button></div>
     <div>mike@mikepray.dev</div>

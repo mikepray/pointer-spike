@@ -1,15 +1,16 @@
-import { RoomState } from "pointer-shared";
+import { randomUUID } from "crypto";
+import { RoomState, RoomStatePlayer } from "pointer-shared";
 
 export class Room {
     roomId: string;
     playerUids: Array<string>; // other player UIDs are not returned to other players because they're being used like session tokens
-    players: Map<string, string>;
-    estimations: Map<string, Estimation>;
+    players: Map<string, string>; // uid, name
+    estimations: Map<string, string>; // uid, estimation
     constructor(
         roomId: string,
         playerUids = new Array<string>(),
         players = new Map<string, string>(),
-        estimations = new Map<string, Estimation>()) {
+        estimations = new Map<string, string>()) {
         this.roomId = roomId;
         this.playerUids = playerUids;
         this.players = players;
@@ -18,28 +19,17 @@ export class Room {
 
     getState = () => {
         // build a map of player names to estimation selections
-        const playerNameToEstimations = new Map<string, string>();
-        
-        for (let key in this.players.keys()) {
-            if (this.estimations.has(key)) {
-                playerNameToEstimations.set(key, this.estimations.get(key)!.toString());
+        const roomStatePlayers: Array<RoomStatePlayer> = new Array<RoomStatePlayer>();
+
+        for (let [uid, name] of this.players) {
+            // make a new UUID to replace the old one, for security
+            const rsp = new RoomStatePlayer(randomUUID(), name);
+            if (this.estimations.has(uid)) {
+                rsp.estimate = this.estimations.get(uid);
             }
+            roomStatePlayers.push(rsp);
         }
 
-        const playerNames: Array<string> = new Array<string>();
-        for (let player in this.players.values()) {
-            playerNames.push(player);
-        }
-
-        return new RoomState(this.roomId, playerNames, playerNameToEstimations);
+        return new RoomState(this.roomId, roomStatePlayers);
     }
-}
-
-export enum Estimation {
-    ONE = 1,
-    TWO = 2,
-    THREE = 3,
-    FIVE = 5,
-    EIGHT = 8,
-    THIRTEEN = 13
 }

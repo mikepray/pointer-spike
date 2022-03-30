@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/pointer-backend/src/server.ts",
+            "program": "${workspaceFolder}/pointer-backend/dist/server.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

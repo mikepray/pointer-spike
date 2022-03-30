@@ -3,24 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
-import { Anchor, AppShell, Header, MantineProvider, Navbar } from '@mantine/core';
 import { Routes, Route } from 'react-router';
-import { BrowserRouter, Link } from 'react-router-dom';
-import Contact from './Components/Contact/contact';
+import { BrowserRouter } from 'react-router-dom';
 import JoinRoom from './Components/JoinRoom/JoinRoom';
 import NoPage from './Components/NoPage/noPage';
 import Room from './Components/Room/Room';
-import CreateRoom from './Components/CreateRoom/CreateRoom';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={ <App/> }>
-          <Route path="create" element={ <CreateRoom /> } />
-          <Route path="contact" element={ <Contact /> } />
+          <Route index element={ <JoinRoom />} />
           <Route path="room" element={ <JoinRoom />} />
-          <Route path="room/:roomId/name/:name" element={ <Room />} />
+          <Route path="room/:roomId" element={ <Room />} />
           <Route path="*" element={ <NoPage />} />
         </Route>
       </Routes>

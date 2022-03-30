@@ -1,5 +1,5 @@
 import { Router} from 'express'
-import { createIssue, deleteIssue, getIssue, replaceIssue, updateIssue } from '../controllers/issue.controller';
+import { createIssue, deleteIssue, getIssue, replaceIssue, updateIssue } from '../controllers/issue.async.controller';
 
 const router = Router();
 router.post('/', createIssue);
