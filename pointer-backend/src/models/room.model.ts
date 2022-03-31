@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { RoomState, RoomStatePlayer } from "pointer-shared";
+import { RoomState, RoomStatePlayer } from "@mikepray/pointer-shared";
 
 export class Room {
     roomId: string;

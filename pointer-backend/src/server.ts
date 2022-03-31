@@ -1,13 +1,8 @@
 import express, {Request, Response, NextFunction} from 'express';
-import issuesRoutes from './routes/issue.router';
 import roomRoutes from './routes/room.router';
 import { json } from 'body-parser';
-import { connectToCouchbase } from './dao/issue.dao';
-import { Cluster } from 'couchbase';
-import { RawData, WebSocketServer } from 'ws';
 import { createServer, IncomingMessage } from 'http';
-import { parse } from 'url';
-import internal, { Duplex } from 'stream';
+import { Duplex } from 'stream';
 import { manageRoom } from './controllers/room.sync.controller';
 import { Room } from './models/room.model';
 import { Player } from './models/player';
@@ -17,7 +12,7 @@ const PORT = 8080;
 export const rooms: Map<string, Room> = new Map<string, Room>();
 export const players: Map<string, Player> = new Map<string, Player>();
 
-export let couchbaseConnection:Promise<Cluster> = connectToCouchbase();
+// export let couchbaseConnection:Promise<Cluster> = connectToCouchbase();
 
 //Create an app
 const app = express();
@@ -25,7 +20,7 @@ const server = createServer(app);
 
 // use json middleware from body-parser
 app.use(json());
-app.use('/issue', issuesRoutes);
+// app.use('/issue', issuesRoutes);
 app.use('/room', roomRoutes);
 
 // Below route is triggered when any error is is thrown

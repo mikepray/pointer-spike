@@ -1,5 +1,5 @@
 import { Stack, Button, Group, Badge, Center, Avatar } from "@mantine/core";
-import { RoomStatePlayer } from "pointer-shared/dist/models/RoomState";
+import { RoomStatePlayer } from "@mikepray/pointer-shared";
 
 interface EstimateProperties {
     estimate: string;

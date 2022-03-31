@@ -1,6 +1,6 @@
 ## build
 ```
-docker build . -t mike/pointer-backend
+docker build . -t pointer-backend
 ```
 
 ## run

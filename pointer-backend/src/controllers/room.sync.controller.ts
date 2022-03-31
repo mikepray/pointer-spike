@@ -1,10 +1,9 @@
 import { randomUUID } from "crypto";
-import { ClientRequest, IncomingMessage } from "http";
+import { IncomingMessage } from "http";
 import { WebSocketServer, RawData, WebSocket } from "ws";
 import { Player } from "../models/player";
 import { Room } from "../models/room.model";
-import { PlayerJoin, PlayerMessage, BroadcastMessage, RoomState } from "pointer-shared";
-import { BroadcastPlayerAction } from "pointer-shared/dist/models/BroadcastPlayerAction";
+import { PlayerJoin, PlayerMessage, BroadcastMessage } from "@mikepray/pointer-shared";
 import { players, rooms } from "../server";
 
 export const manageRoom = (): WebSocketServer => {

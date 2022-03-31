@@ -1,7 +1,7 @@
 import { SimpleGrid, Button, Space, Text, Grid, Group } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "pointer-shared";
+import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "@mikepray/pointer-shared";
 import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
 

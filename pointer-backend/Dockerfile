@@ -1,18 +1,20 @@
-FROM node:current-alpine3.14
+FROM node:17-alpine3.14
+
+COPY . /srv/
 
 # Create app directory
-WORKDIR /usr/src/app
+# WORKDIR /usr/src/app
+WORKDIR /srv
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN /usr/local/bin/npm install
+
+# Copy shared lib over
+ADD tsconfig.json /srv
+
 # If you are building your code for production
 # RUN npm ci --only=production
-
-COPY . .
 
 EXPOSE 8080
 
