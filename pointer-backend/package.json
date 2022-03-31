@@ -1,7 +1,10 @@
 {
   "name": "pointer-backend",
   "version": "1.0.0",
-  "description": "",
+  "repository": {
+    "url": "git://github.com/mikepray/pointer-spike.git"
+  },
+  "description": "Node backend for planning poker application",
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,16 +14,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mikepray/pointer-shared": "^1.0.2",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
     "@types/ws": "^8.5.3",
     "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
-    "@mikepray/pointer-shared": "file:../shared",
     "typescript": "^4.6.3",
     "ws": "^8.5.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "nodemon": "^2.0.15"
   }
 }

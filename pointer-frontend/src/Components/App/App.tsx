@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import { Anchor, AppShell, Burger, Center, Header, MantineProvider, MediaQuery, Navbar, Space, Text, ThemeIcon } from '@mantine/core';
 import SaiLogo from './SAI_temp-logo_dteal.svg'
 import MeetupLogo from './Turq_Meetups_1.svg'
+
 import './App.css';
 
 const App = () => {
+
   const [burgerOpened, setBurgerOpened] = useState(false);
 
   return (

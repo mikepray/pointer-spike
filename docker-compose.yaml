@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: pointer-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - front-tier
+      - back-tier
+
+  backend:
+    image: pointer-backend
+    ports:
+      - "8080:8080"
+    networks: 
+      - back-tier
+
+networks:
+  front-tier: {}
+  back-tier: {}

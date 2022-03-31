@@ -10,9 +10,6 @@ COPY package*.json ./
 
 RUN /usr/local/bin/npm install
 
-# Copy shared lib over
-ADD tsconfig.json /srv
-
 # If you are building your code for production
 # RUN npm ci --only=production
 

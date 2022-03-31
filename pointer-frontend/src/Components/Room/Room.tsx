@@ -6,6 +6,7 @@ import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
 
 
+
 const Room = () => {
     let params = useParams();
     const [ws, setWebSocket] = useState<WebSocket>();
@@ -16,7 +17,8 @@ const Room = () => {
     const [nameModalOpened, setNameModalOpened] = useState(true);
 
     useEffect(() => {
-        setWebSocket(new WebSocket("ws://localhost:8080/socket"));
+        // setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
+        setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
     }, []);
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const Room = () => {
     }, [estimation]);
 
     const updatePlayer = () => {
-        fetch(`/room/${params.roomId}/player/${uid}`, {
+        fetch(`http://localhost:8080/room/${params.roomId}/player/${uid}`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -52,7 +54,7 @@ const Room = () => {
     }
 
     const clearAllEstimates = () => {
-        fetch(`/room/${params.roomId}/estimates`, {
+        fetch(`http://localhost:8080/room/${params.roomId}/estimates`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
@@ -65,7 +67,7 @@ const Room = () => {
         ws.onmessage = event => {
             const message = JSON.parse(event.data)
             if (message as BroadcastMessage && message?.roomState) {
-                // console.log(`setting room state ${JSON.stringify(message.roomState)}`);
+                console.log(`setting room state ${JSON.stringify(message.roomState)}`);
                 setRoomState(message.roomState);
             } else if (message as PlayerMessage) {
                 if (message?.playerJoin?.uid !== undefined) {

@@ -7,7 +7,7 @@ docker build . -t pointer-backend
 > Running your image with -d runs the container in detached mode, leaving the container running in the background. The -p flag redirects a public port to a private port inside the container. Run the image you previously built:
 
 ```
-docker run -p 8082:8080 -d mike/pointer-backend
+docker run -p 8080:8080 -d mike/pointer-backend
 ```
 
 Print the output of your app:
@@ -25,6 +25,8 @@ If you need to go inside the container you can use the exec command:
 
 
 ## other stuff
+
+(couchbase is no longer used) 
 
 Couchbase reqs:
 - requires cmake installed:

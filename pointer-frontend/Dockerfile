@@ -1,23 +1,11 @@
-FROM node:17-alpine3.14
+# build environment
+FROM node:17-alpine3.14 as build
 
-COPY . /srv/
-
-# Create app directory
-# WORKDIR /usr/src/app
-WORKDIR /srv
+WORKDIR /app
+COPY . .
 
 RUN /usr/local/bin/npm install
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-# COPY package*.json ./
-
-# RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# COPY . .
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
