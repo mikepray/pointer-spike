@@ -18,7 +18,7 @@ const Room = () => {
 
     useEffect(() => {
         // setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
-        setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
+        setWebSocket(new WebSocket(`ws://localhost:8080/socket`));
     }, []);
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const Room = () => {
     }, [estimation]);
 
     const updatePlayer = () => {
-        fetch(`http://localhost:8080/room/${params.roomId}/player/${uid}`, {
+        fetch(`/room/${params.roomId}/player/${uid}`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -54,7 +54,7 @@ const Room = () => {
     }
 
     const clearAllEstimates = () => {
-        fetch(`http://localhost:8080/room/${params.roomId}/estimates`, {
+        fetch(`/room/${params.roomId}/estimates`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',

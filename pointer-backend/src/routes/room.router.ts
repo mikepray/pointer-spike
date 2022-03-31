@@ -3,7 +3,6 @@ import { deleteEstimates, updateRoomPlayer } from '../controllers/room.async.con
 import cors from 'cors';
 
 const router = Router();
-router.options("*", cors);
-router.patch('/:roomId/player/:playerUid', cors, updateRoomPlayer);
-router.delete('/:roomId/estimates', cors, deleteEstimates);
+router.patch('/:roomId/player/:playerUid', updateRoomPlayer);
+router.delete('/:roomId/estimates', deleteEstimates);
 export default router;
