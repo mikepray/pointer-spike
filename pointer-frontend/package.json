@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "React frontend for Planning Poker application",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8080/*",
   "repository": {
     "url": "git://github.com/mikepray/pointer-spike.git"
   },

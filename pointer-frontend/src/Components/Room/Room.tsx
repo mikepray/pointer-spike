@@ -5,8 +5,6 @@ import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "@mikepra
 import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
 
-
-
 const Room = () => {
     let params = useParams();
     const [ws, setWebSocket] = useState<WebSocket>();
@@ -18,7 +16,7 @@ const Room = () => {
 
     useEffect(() => {
         // setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
-        setWebSocket(new WebSocket(`ws://localhost:8080/socket`));
+        setWebSocket(new WebSocket(`ws://localhost:8080/api/socket`));
     }, []);
 
     useEffect(() => {
@@ -38,8 +36,12 @@ const Room = () => {
         }
     }, [estimation]);
 
+    // one issue is that the custom proxy setupProxy.js does not work with typescript and is ignored when starting the project
+    // another issue is that the "proxy" directive in package.json doesnt work when i put 'api' in the fetch command
+    // the last issue is that cors doesnt work from the server side
+
     const updatePlayer = () => {
-        fetch(`/room/${params.roomId}/player/${uid}`, {
+        fetch(`http://localhost:8080/api/room/${params.roomId}/player/${uid}`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -54,7 +56,7 @@ const Room = () => {
     }
 
     const clearAllEstimates = () => {
-        fetch(`/room/${params.roomId}/estimates`, {
+        fetch(`/api/room/${params.roomId}/estimates`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
