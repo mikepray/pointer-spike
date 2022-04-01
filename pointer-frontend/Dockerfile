@@ -14,12 +14,11 @@ COPY . /app
 
 RUN npm run build
 
-ENV NODE_ENV production
-
 FROM nginx:alpine
+
 # Copy build assets to nginx static folder
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html/
 # Copy nginx reverse-proxy config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx2.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD [ "nginx", "-g", "daemon off;"]
