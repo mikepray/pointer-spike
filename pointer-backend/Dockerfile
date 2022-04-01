@@ -1,10 +1,13 @@
-FROM node:17-alpine3.14
+FROM node:17-alpine3.14 as build
+
+ENV NODE_ENV production
+
+WORKDIR /srv
 
 COPY . /srv/
 
 # Create app directory
 # WORKDIR /usr/src/app
-WORKDIR /srv
 
 COPY package*.json ./
 

@@ -22,7 +22,7 @@ const server = createServer(app);
 // use json middleware from body-parser
 app.use(json());
 
-app.use('/room', roomRoutes);
+app.use('/api/room', roomRoutes);
 
 // Below route is triggered when any error is is thrown
 app.use((err: Error, req: Request, res:Response, next: NextFunction) => {

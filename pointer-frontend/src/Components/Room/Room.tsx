@@ -39,7 +39,7 @@ const Room = () => {
     }, [estimation]);
 
     const updatePlayer = () => {
-        fetch(`/room/${params.roomId}/player/${uid}`, {
+        fetch(`/api/room/${params.roomId}/player/${uid}`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -54,7 +54,7 @@ const Room = () => {
     }
 
     const clearAllEstimates = () => {
-        fetch(`/room/${params.roomId}/estimates`, {
+        fetch(`/api/room/${params.roomId}/estimates`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
