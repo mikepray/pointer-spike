@@ -26,7 +26,7 @@ const App = () => {
             width={{ sm: 100, lg: 300, md: 200 }}
           >
             <Navbar.Section mt="xs">
-              <Anchor component={Link} to="/room">
+              <Anchor component={Link} to="/poker/room">
                 {/* <img className="Meetup-icon" src={MeetupLogo} /> */}
                 <Center>
                 <ThemeIcon variant="outline" size="lg">

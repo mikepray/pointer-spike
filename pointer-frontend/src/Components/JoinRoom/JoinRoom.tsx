@@ -7,7 +7,7 @@ const JoinRoom = () => {
     let navigate = useNavigate();
 
     const handleSubmit = (values: typeof form.values) => {
-        return navigate(`/room/${form.values.roomName}`);
+        return navigate(`/poker/room/${form.values.roomName}`);
     }
 
     const form = useForm({

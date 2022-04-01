@@ -13,7 +13,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={ <App/> }>
+        <Route path="/poker" element={ <App/> }>
           <Route index element={ <JoinRoom />} />
           <Route path="room" element={ <JoinRoom />} />
           <Route path="room/:roomId" element={ <Room />} />
