@@ -19,6 +19,6 @@ FROM nginx:alpine
 # Copy build assets to nginx static folder
 COPY --from=build /app/build /usr/share/nginx/html/
 # Copy nginx reverse-proxy config
-COPY nginx2.conf /etc/nginx/conf.d/default.conf
+COPY nginx-kubernetes.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD [ "nginx", "-g", "daemon off;"]
