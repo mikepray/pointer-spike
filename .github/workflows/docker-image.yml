@@ -31,8 +31,8 @@ jobs:
       name: Build and push Frontend
       uses: docker/build-push-action@v2
       with:
-        context: ./frontend
-        file: ./Dockerfile
+        context: ./frontend/.
+        file: ./frontend/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ghcr.io/scaled-agile-inc/pointer-frontend-12:latest
@@ -40,8 +40,8 @@ jobs:
       name: Build and push Backend
       uses: docker/build-push-action@v2
       with:
-        context: ./backend
-        file: ./Dockerfile
+        context: ./backend/.
+        file: ./backend/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         tags: ghcr.io/scaled-agile-inc/pointer-backend-1:latest
         push: true
