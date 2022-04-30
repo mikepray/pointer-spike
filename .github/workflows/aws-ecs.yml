@@ -41,9 +41,9 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY-frontend:$IMAGE_TAG ./pointer-frontend/.
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY-frontend:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY-frontend:$IMAGE_TAG"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG ./pointer-frontend/.
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG"
           
       - name: 📦 Build, tag, and push backend image to Amazon ECR
         id: build-backend-image
@@ -54,9 +54,9 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY-backend:$IMAGE_TAG ./pointer-backend/.
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY-backend:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY-backend:$IMAGE_TAG"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG ./pointer-backend/.
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG"
           
       - name: 📝 Modify Amazon ECS task definition for frontend container
         id: task-def-frontend
