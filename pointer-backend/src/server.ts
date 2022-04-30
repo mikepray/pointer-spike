@@ -6,7 +6,6 @@ import { Duplex } from 'stream';
 import { manageRoom } from './controllers/room.sync.controller';
 import { Room } from './models/room.model';
 import { Player } from './models/player';
-import cors from 'cors';
 
 const PORT = 8080;
 
