@@ -20,7 +20,8 @@ const Contact = () => {
 
   useEffect(() => {
     getApiData();
-    setWebSocket(new WebSocket("ws://localhost:8080/socket"));
+    setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
+    // setWebSocket(new WebSocket("ws://localhost:8080/socket"));
 
   }, []);
 

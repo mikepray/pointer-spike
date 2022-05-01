@@ -17,8 +17,8 @@ const Room = () => {
     const [nameModalOpened, setNameModalOpened] = useState(true);
 
     useEffect(() => {
-        // setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
-        setWebSocket(new WebSocket(`ws://localhost:8080/socket`));
+        setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
+        // setWebSocket(new WebSocket(`ws://localhost:8080/socket`));
     }, []);
 
     useEffect(() => {
