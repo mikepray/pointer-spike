@@ -16,9 +16,19 @@ const Room = () => {
 
     useEffect(() => {
         setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
-        setTimeout(keepAlive, 25000)
+        
     }, []);
 
+    useEffect(() => {
+        setTimeout(keepAlive, 20000)
+    }, [ws]);
+
+    // keep the ws connection alive so that load balancers, proxies, or networking hardware don't see the connection as idle
+    const keepAlive = () => {
+        ws?.send(JSON.stringify(new PlayerMessage(undefined, true)));
+        setTimeout(keepAlive, 20000);
+    }
+    
     useEffect(() => {
         // join handshake
         if (ws !== undefined) {
@@ -81,12 +91,6 @@ const Room = () => {
         }
     }
     
-    // keep-alive so that load balancers / networking hardware doesn't think the connection is idle
-    const keepAlive = () => {
-        fetch(`/api/health`);
-        setTimeout(keepAlive, 25000);
-    }
-
     return <>
         <NameModal opened={nameModalOpened} setNameModalOpened={setNameModalOpened} playerName={name} setName={setName} />
 

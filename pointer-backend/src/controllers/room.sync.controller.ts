@@ -35,13 +35,16 @@ const onMessage = (ws: WebSocket, message: RawData) => {
     try {
         const playerMessage = JSON.parse(message.toString());
 
-        // assume the incoming message is a Message
+        // assume the incoming message is a PlayerMessage
         if (playerMessage as PlayerMessage) {
             // if the playerJoin property exists
             if ((playerMessage as PlayerMessage)?.playerJoin) {              
                 joinRoom(ws, playerMessage.playerJoin);
             }
-        }
+            if ((playerMessage as PlayerMessage)?.keepAlive) {
+                // no op: keep alive
+            }
+        } 
     } catch (e) {
         console.log(`e ${e}`);
     }

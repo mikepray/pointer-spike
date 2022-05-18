@@ -12,7 +12,7 @@
     "@mantine/form": "^4.1.0",
     "@mantine/hooks": "^4.1.0",
     "@mantine/notifications": "^4.1.0",
-    "@mikepray/pointer-shared": "^1.0.2",
+    "@mikepray/pointer-shared": "^1.0.3",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",

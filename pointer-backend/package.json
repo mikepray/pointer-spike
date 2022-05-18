@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mikepray/pointer-shared": "^1.0.2",
+    "@mikepray/pointer-shared": "^1.0.3",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
     "@types/ws": "^8.5.3",
