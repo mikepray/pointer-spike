@@ -46,7 +46,7 @@ export const NameModal = (props: NameModalProperties) => {
                 <Group position="right" mt="md">
                     <Button
                         variant="gradient"
-                        gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+                        color="turquoise"
                         uppercase
                         size="md"
                         type="submit"

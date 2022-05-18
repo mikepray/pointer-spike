@@ -5,8 +5,6 @@ import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "@mikepra
 import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
 
-
-
 const Room = () => {
     let params = useParams();
     const [ws, setWebSocket] = useState<WebSocket>();
@@ -18,7 +16,7 @@ const Room = () => {
 
     useEffect(() => {
         setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
-        // setWebSocket(new WebSocket(`ws://localhost:8080/socket`));
+        setTimeout(keepAlive, 25000)
     }, []);
 
     useEffect(() => {
@@ -61,6 +59,8 @@ const Room = () => {
                 'Content-Type': 'application/json'
             }
         });
+        // set the estimation to -1 after clearing the estimate. this is necessary so that the user can make the same estimation twice in a row
+        setEstimation("-1");
     }
 
     if (ws !== undefined) {
@@ -80,27 +80,44 @@ const Room = () => {
             }
         }
     }
+    
+    // keep-alive so that load balancers / networking hardware doesn't think the connection is idle
+    const keepAlive = () => {
+        fetch(`/health`);
+        setTimeout(keepAlive, 25000);
+    }
 
     return <>
         <NameModal opened={nameModalOpened} setNameModalOpened={setNameModalOpened} playerName={name} setName={setName} />
 
         <Group position="apart">
-            <Text>Hi {name}, you're in Room {params.roomId}!</Text>
+            <Text>Hi {name}, you're in room {params.roomId}!</Text>
 
             <Button
-                variant="gradient"
-                gradient={{ from: 'orange', to: 'red' }}
-                onClick={() => clearAllEstimates()}>Clear All Estimates</Button>
+                styles={(theme: { fn: { darken: (arg0: string, arg1: number) => any; }; }) => ({
+                    root: {
+                        backgroundColor: '#993320',                    
+                    },
+                })}
+                onClick={() => clearAllEstimates()}>Clear Estimates</Button>
+                
         </Group>
 
         <Space h="lg" />
-        <SimpleGrid cols={6}>
-            <Estimate estimate="1" players={roomState?.players} gradientFrom="#146eff" gradientTo="#1c14ff" setEstimation={setEstimation} />
-            <Estimate estimate="2" players={roomState?.players} gradientFrom="#1c14ff" gradientTo="#4b14ff" setEstimation={setEstimation} />
-            <Estimate estimate="3" players={roomState?.players} gradientFrom="#4b14ff" gradientTo="#6e14ff" setEstimation={setEstimation} />
-            <Estimate estimate="5" players={roomState?.players} gradientFrom="#6e14ff" gradientTo="#8e14ff" setEstimation={setEstimation} />
-            <Estimate estimate="8" players={roomState?.players} gradientFrom="#8e14ff" gradientTo="#ad14ff" setEstimation={setEstimation} />
-            <Estimate estimate="13" players={roomState?.players} gradientFrom="#ad14ff" gradientTo="#e014ff" setEstimation={setEstimation} />
+        <SimpleGrid
+            cols={8}
+            breakpoints={[
+                { maxWidth: 900, cols: 1, spacing: 'sm' }
+            ]}
+        >
+            <Estimate estimate="0" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="1" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="2" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="3" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="5" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="8" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="13" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
+            <Estimate estimate="?" players={roomState?.players} gradientFrom="#0A83A0" gradientTo="#0A83A0" setEstimation={setEstimation} />
         </SimpleGrid>
         <Space h="lg" />
     </>
