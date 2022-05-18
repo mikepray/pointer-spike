@@ -28,7 +28,7 @@ app.use((err: Error, req: Request, res:Response, next: NextFunction) => {
     res.status(500).json({message: err.message});
 });
 
-app.get('/health', (req: Request, res: Response) => {
+app.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({healthy: true});
 });
 

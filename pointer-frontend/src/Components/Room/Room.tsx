@@ -83,7 +83,7 @@ const Room = () => {
     
     // keep-alive so that load balancers / networking hardware doesn't think the connection is idle
     const keepAlive = () => {
-        fetch(`/health`);
+        fetch(`/api/health`);
         setTimeout(keepAlive, 25000);
     }
 
