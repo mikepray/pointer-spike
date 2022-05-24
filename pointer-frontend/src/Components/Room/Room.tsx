@@ -14,9 +14,42 @@ const Room = () => {
     const [uid, setUid] = useState("");
     const [nameModalOpened, setNameModalOpened] = useState(true);
 
+    // socket reconnection mechanism:
+    // - when browser / computer hibernates / kills socket
+    // - when server restarts
+    // - when internet goes out
+    // - when user reloads page (or closes and rejoins)
+
+    /* TODO:
+        switch to async handshake that creates the uid on the server side and sets a uid cookie
+        once the client receives the join response, then it opens the websocket connection
+
+        also support if the server restarts and the client cookie is still valid
+    */
+
+    // join / reconnect
     useEffect(() => {
-        setWebSocket(new WebSocket(`ws://${window.location.hostname}:8080/socket`));
         
+        // get the player. if it's 404, then create the player
+
+        fetch(`/api/room/${params.roomId}/player`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                roomId: params.roomId,
+                name: name,
+                estimation: estimation
+            })
+        });
+    }, []);
+
+    useEffect(() => {
+        const websocket = new WebSocket(`ws://${window.location.hostname}:8080/socket`)
+        setWebSocket(websocket);
     }, []);
 
     useEffect(() => {
@@ -80,6 +113,7 @@ const Room = () => {
                 console.log(`setting room state ${JSON.stringify(message.roomState)}`);
                 setRoomState(message.roomState);
             } else if (message as PlayerMessage) {
+                // TODO: this goes away once it's switched to async handshake
                 if (message?.playerJoin?.uid !== undefined) {
                     // save back the player uid assigned by the server
                     console.log(`Handshake successful, joined room: ${message.playerJoin.roomId}, UID: ${message.playerJoin.uid}`)

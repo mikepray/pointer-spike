@@ -4,13 +4,9 @@ import { json } from 'body-parser';
 import { createServer, IncomingMessage } from 'http';
 import { Duplex } from 'stream';
 import { manageRoom } from './controllers/room.sync.controller';
-import { Room } from './models/room.model';
-import { Player } from './models/player';
+import cookieParser from "cookie-parser";
 
 const PORT = 8080;
-
-export const rooms: Map<string, Room> = new Map<string, Room>();
-export const players: Map<string, Player> = new Map<string, Player>();
 
 // export let couchbaseConnection:Promise<Cluster> = connectToCouchbase();
 
@@ -20,7 +16,7 @@ const server = createServer(app);
 
 // use json middleware from body-parser
 app.use(json());
-
+app.use(cookieParser());
 app.use('/api/room', roomRoutes);
 
 // Below route is triggered when any error is is thrown

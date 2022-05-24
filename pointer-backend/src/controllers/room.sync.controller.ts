@@ -52,34 +52,17 @@ const onMessage = (ws: WebSocket, message: RawData) => {
 
 const joinRoom = (ws: WebSocket, playerJoin: PlayerJoin) => {
     
-    if (playerJoin?.roomId) {
-        // if the room doesn't exist, create it.
-        if (!rooms.get(playerJoin.roomId)) {
-            console.log(`Creating room ${playerJoin.roomId}`);
-            rooms.set(playerJoin.roomId, new Room(playerJoin.roomId));
-        }
+    // client needs to send cookie in ws message body
 
-        // create a player
-        const newPlayer = new Player(randomUUID(), playerJoin.roomId, ws);
+    // get the uid from the new player, and assign it to the player join message
+    playerJoin.uid = ???;
 
-        // get the room
-        const room = rooms.get(playerJoin.roomId);
+    // send a message back to the player who just joined that includes the uid
+    ws.send(JSON.stringify(new PlayerMessage(playerJoin)));
 
-        // add the player UID to the room
-        room?.playerUids?.push(newPlayer.uid);
+    // broadcast a message to the players in the room saying when a player joins
+    broadcastRoomState(newPlayer.roomId);
 
-        // add the player to the map of players
-        players.set(newPlayer.uid, newPlayer);        
-
-        // get the uid from the new player, and assign it to the player join message
-        playerJoin.uid = newPlayer.uid;
-
-        // send a message back to the player who just joined that includes the uid
-        ws.send(JSON.stringify(new PlayerMessage(playerJoin)));
-
-        // broadcast a message to the players in the room saying when a player joins
-        broadcastRoomState(newPlayer.roomId);
-    }
 }
 
 export const broadcastRoomState = (roomId: string) => {
