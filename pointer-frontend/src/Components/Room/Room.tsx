@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage } from "@mikepray/pointer-shared";
 import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
+import { connectPlayer } from "./ConnectPlayer";
 
 const Room = () => {
     let params = useParams();
@@ -29,26 +30,11 @@ const Room = () => {
 
     // join / reconnect
     useEffect(() => {
-        
-        // get the player. if it's 404, then create the player
-
-        fetch(`/api/room/${params.roomId}/player`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-
-            },
-            body: JSON.stringify({
-                roomId: params.roomId,
-                name: name,
-                estimation: estimation
-            })
-        });
-    }, []);
+      connectPlayer(name);
+    }, [ws, name]);
 
     useEffect(() => {
-        const websocket = new WebSocket(`ws://${window.location.hostname}:8080/socket`)
+        const websocket = new WebSocket(`ws://${window.location.hostname}:8080/room/id`)
         setWebSocket(websocket);
     }, []);
 

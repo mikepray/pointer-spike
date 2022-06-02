@@ -1,5 +1,6 @@
 import express, {Request, Response, NextFunction} from 'express';
 import roomRoutes from './routes/room.router';
+import playerRoutes from './routes/player.router';
 import { json } from 'body-parser';
 import { createServer, IncomingMessage } from 'http';
 import { Duplex } from 'stream';
@@ -18,6 +19,7 @@ const server = createServer(app);
 app.use(json());
 app.use(cookieParser());
 app.use('/api/room', roomRoutes);
+app.use('/api/player', playerRoutes)
 
 // Below route is triggered when any error is is thrown
 app.use((err: Error, req: Request, res:Response, next: NextFunction) => {
