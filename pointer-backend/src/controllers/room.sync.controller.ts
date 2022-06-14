@@ -13,17 +13,6 @@ export const manageRoom = (): WebSocketServer => {
         ws.on('message', function (message: RawData) {
             onMessage(ws, message);
         });
-
-        ws.on('close', function (ws: WebSocket) {
-            // delete player and remove from room
-            console.log('player disconnect');
-            /*players.forEach(player => {
-                if (player.webSocketClient === ws) {
-                    console.log('found websocket')
-                    players.delete(player.uid);
-                }
-            });*/
-        });
     });
 
     return wss;

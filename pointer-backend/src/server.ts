@@ -18,6 +18,7 @@ const server = createServer(app);
 // use json middleware from body-parser
 app.use(json());
 app.use(cookieParser());
+
 app.use('/api/room', roomRoutes);
 app.use('/api/player', playerRoutes)
 

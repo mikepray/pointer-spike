@@ -1,8 +1,7 @@
 import cookies from 'js-cookie';
 
 export async function connectPlayer(playerName: string) {
-    // 1. check for cookie. if it doesn't exist, then create a new player on the server
-    const playerUID = await getPlayerUidFromCookie(playerName);
+    const playerUID = await getPlayerUID(playerName);
     
     
     // two ways to get the websocket to connect: 
@@ -12,12 +11,14 @@ export async function connectPlayer(playerName: string) {
     //      server updates its websocket client cache
 }
 
-async function getPlayerUidFromCookie(playerName: string) {
+async function getPlayerUID(playerName: string) {
+    // 1. check for cookie. 
     const playerUid = cookies.get('planningPokerPlayerUid');
     if (playerUid !== undefined) {
         return playerUid;
     }
-    return fetch(`/api/player`, {
+    // 1. if it doesn't exist, then create a new player on the server
+    const response = await fetch(`/api/player`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -28,11 +29,10 @@ async function getPlayerUidFromCookie(playerName: string) {
             name: playerName,
             estimate: -1
         })
-    })
-    .then(response => {
-        console.log(response);
-        response.json();
-    })// TODO returns the cookie as data?    
+    });
+    const data = await response.json();
+    
+    // TODO returns the cookie as data?    
     // 1.a. get the new player's UID from the POST response
     /*.then(data => {
         // save the cookie
@@ -48,11 +48,7 @@ async function addPlayerToRoom(roomId: string, playerUid: string) {
             Accept: 'application/json',
             'Content-Type': 'application/json',
 
-        },
-        body: JSON.stringify({
-            name: playerName,
-            estimate: -1
-        })
+        }
     })
     .then(response => {
         console.log(response);

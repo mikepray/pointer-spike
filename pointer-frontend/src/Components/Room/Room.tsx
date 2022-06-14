@@ -34,7 +34,7 @@ const Room = () => {
     }, [ws, name]);
 
     useEffect(() => {
-        const websocket = new WebSocket(`ws://${window.location.hostname}:8080/room/id`)
+        const websocket = new WebSocket(`ws://${window.location.hostname}:8080/room/{id}`)// FIXME room id
         setWebSocket(websocket);
     }, []);
 
