@@ -6,7 +6,7 @@ interface EstimateProperties {
     players: RoomStatePlayer[] | undefined;
     gradientFrom: string;
     gradientTo: string;
-    setEstimation: React.Dispatch<React.SetStateAction<string>>;
+    setEstimation: (estimation: string) => void;
 }
 
 export const Estimate = (props: EstimateProperties) => {

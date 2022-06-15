@@ -5,9 +5,9 @@ import { rooms } from "./room.service";
 
 export const players: Map<string, Player> = new Map<string, Player>();
 
-export const createPlayer = (name: string): Player => {
+export const createPlayer = (name: string, estimate: string | undefined): Player => {
     // create a player
-    const newPlayer = new Player(randomUUID(), undefined, name);
+    const newPlayer = new Player(randomUUID(), name, estimate);
     // add the player to the map of players
     players.set(newPlayer.uid, newPlayer);
 
@@ -20,11 +20,7 @@ export const getPlayer = (playerUid: string): Player | undefined => {
 
 export const updatePlayer = (updatedPlayer: RoomStatePlayer) => {
     if (players.has(updatedPlayer.uid)) {
-        const existingPlayer = players.get(updatedPlayer.uid) as Player;
-        const mergedPlayer = new Player(updatedPlayer.uid, existingPlayer.roomId, updatedPlayer.name);
-        mergedPlayer.estimate = updatedPlayer.estimate !== null ? updatedPlayer.estimate : existingPlayer.estimate;
-        mergedPlayer.webSocketClient = existingPlayer.webSocketClient;
-
+        const mergedPlayer = new Player(updatedPlayer.uid, updatedPlayer.name, updatedPlayer.estimate);
         players.set(updatedPlayer.uid, mergedPlayer);
         return mergedPlayer;
     }    
@@ -33,5 +29,14 @@ export const updatePlayer = (updatedPlayer: RoomStatePlayer) => {
 
 
 export const getRoomByPlayerUid = (playerUid: string): string | undefined => {
-    return players.get(playerUid)?.roomId;
+    // look through all rooms
+    for (let [roomId, room] of rooms) {
+        // look through all players
+        for (let player of room.playerUids) {
+            if (player === playerUid) {
+                return roomId;
+            }
+        }
+    }
+    return undefined;
 }

@@ -3,8 +3,7 @@ import roomRoutes from './routes/room.router';
 import playerRoutes from './routes/player.router';
 import { json } from 'body-parser';
 import { createServer, IncomingMessage } from 'http';
-import { Duplex } from 'stream';
-import { manageRoom } from './controllers/room.sync.controller';
+import { initializeWebsocketServer } from './controllers/room.sync.controller';
 import cookieParser from "cookie-parser";
 
 const PORT = 8080;
@@ -31,21 +30,7 @@ app.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({healthy: true});
 });
 
-const wss = manageRoom();
-
-server.on('upgrade', function upgrade(request: IncomingMessage, socket: Duplex, head: Buffer): void {
-    console.log(`upgrading...`)
-    if (request !== undefined) {
-        if (request.url === '/socket') {
-            wss.handleUpgrade(request, socket, head, function done(ws) {
-                wss.emit('connection', ws, request);
-            });
-        } else {
-            socket.destroy();
-        }
-    }
-  }
-);
+initializeWebsocketServer(server);
 
 server.listen(PORT);
 

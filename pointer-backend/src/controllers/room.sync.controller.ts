@@ -1,57 +1,50 @@
-import { IncomingMessage } from "http";
+import { IncomingMessage, Server } from "http";
 import { WebSocketServer, RawData, WebSocket } from "ws";
+import { Duplex } from 'stream';
 
 import { PlayerJoin, PlayerMessage, BroadcastMessage } from "@mikepray/pointer-shared";
-import { getRoomState, rooms } from "../services/room.service";
+import { addPlayerToRoom as playerJoinRoom, createRoom, getRoomState, rooms } from "../services/room.service";
 import { getPlayer, players } from "../services/player.service";
+import { getSocket, playerWebsocketCache, setPlayerSocket as connectPlayerSocket } from "../services/playerWebsocket.service";
 
-export const manageRoom = (): WebSocketServer => {
+export const initializeWebsocketServer = (server: Server): WebSocketServer => {
 
     const wss = new WebSocketServer({ "noServer": true });
 
-    wss.on('connection', function (ws, request: IncomingMessage) {
+    wss.on('connection', function (ws: WebSocket, request: IncomingMessage) {
         ws.on('message', function (message: RawData) {
-            onMessage(ws, message);
+            // onMessage(ws, message);
         });
+    });
+
+    // handle upgrade
+    server.on('upgrade', function upgrade(request: IncomingMessage, socket: Duplex, head: Buffer): void {
+        if (request !== undefined) {
+            wss.handleUpgrade(request, socket, head, function done(ws: WebSocket) {
+                if (request.url) {
+                    let url = new URL(request.url, `http://${request.headers.host}`);
+                    if (url.searchParams.get("room") && url.searchParams.has("room") !== null 
+                        && url.searchParams.has("playerUid") && url.searchParams.get("playerUid") !== null) {
+                        const roomId = url.searchParams.get("room") as string;
+                        const playerUid = url.searchParams.get("playerUid") as string;
+                        createRoom(roomId)
+                        playerJoinRoom(roomId, playerUid)
+                        connectPlayerSocket(url.searchParams.get("playerUid") as string, ws);
+                        broadcastRoomState(roomId);
+                    }
+                }
+
+                // do keepalive
+
+                wss.emit('connection', ws, request);
+            });
+        } else {
+            socket.destroy();
+        }
     });
 
     return wss;
 };
-
-const onMessage = (ws: WebSocket, message: RawData) => {
-    
-    try {
-        const playerMessage = JSON.parse(message.toString());
-
-        // assume the incoming message is a PlayerMessage
-        if (playerMessage as PlayerMessage) {
-            // if the playerJoin property exists
-            if ((playerMessage as PlayerMessage)?.playerJoin) {              
-                joinRoom(ws, playerMessage.playerJoin);
-            }
-            if ((playerMessage as PlayerMessage)?.keepAlive) {
-                // no op: keep alive
-            }
-        } 
-    } catch (e) {
-        console.log(`e ${e}`);
-    }
-}
-
-const joinRoom = (ws: WebSocket, playerJoin: PlayerJoin) => {
-    
-    // client needs to send cookie in ws message body
-
-    // get the uid from the new player, and assign it to the player join message
-    // playerJoin.uid = ÷÷
-
-    // send a message back to the player who just joined that includes the uid
-    ws.send(JSON.stringify(new PlayerMessage(playerJoin)));
-
-    // broadcast a message to the players in the room saying when a player joins
-    // broadcastRoomState(newPlayer.roomId);
-
-}
 
 export const broadcastRoomState = (roomId: string) => {
     const room = rooms.get(roomId);
@@ -59,15 +52,14 @@ export const broadcastRoomState = (roomId: string) => {
         if (players.has(playerUid)) {
             const player = getPlayer(playerUid);
             const roomState = getRoomState(roomId);
+            const socket = getSocket(playerUid);
             if (player !== undefined && roomState !== undefined) {
-                console.log(`broadcasting to client ${playerUid}`);//, ${JSON.stringify(room.getState())}`);//, websocket: ${JSON.stringify(players.get(playerUid)?.webSocketClient)}`)
-                player?.webSocketClient?.send(JSON.stringify(new BroadcastMessage(roomState)));
+                // console.log(`broadcasting to client ${playerUid}`);//, ${JSON.stringify(room.getState())}`);//, websocket: ${JSON.stringify(players.get(playerUid)?.webSocketClient)}`)
+                socket?.send(JSON.stringify(new BroadcastMessage(roomState)));
             }
         }
     });
 }
-        
-
 
  // deduplicate websocket/player code (when the user refershes, the ws client doesn't seem to close )
 

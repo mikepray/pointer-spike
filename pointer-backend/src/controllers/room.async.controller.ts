@@ -10,13 +10,3 @@ export const handleDeleteEstimates: RequestHandler<{ roomId: string }> = (req, r
         res.sendStatus(404);
     }
 }
-
-export const handleAddPlayerToRoom: RequestHandler<{ roomId: string, playerUid: string }> = (req, res, next) => {
-    if (addPlayerToRoom(req.params.roomId, req.params.playerUid)) {
-        res.sendStatus(200);
-        broadcastRoomState(req.params.roomId);
-    } else {
-        res.sendStatus(404);
-    }
-
-}
