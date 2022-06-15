@@ -5,6 +5,7 @@ import { PlayerMessage, PlayerJoin, RoomState, BroadcastMessage, RoomStatePlayer
 import { Estimate } from "../Estimate/Estimate";
 import { NameModal } from "../NameModal/NameModal";
 import Cookies from "js-cookie";
+import { DisconnectedModal } from "../DisconnectedModal/DisconnectedModal";
 
 const Room = () => {
     let params = useParams();
@@ -13,6 +14,7 @@ const Room = () => {
     const [roomState, setRoomState] = useState<RoomState>();
     const [uid, setUid] = useState("");
     const [nameModalOpened, setNameModalOpened] = useState(false);
+    const [disconnectModalOpened, setDisconnectModalOpened] = useState(false);
 
     // socket reconnection mechanism:
     // - when browser / computer hibernates / kills socket
@@ -21,7 +23,10 @@ const Room = () => {
     // - when user reloads page (or closes and rejoins)
 
     // join / reconnect
-    useEffect(() => {
+    useEffect(join, []);
+    useEffect(connect, [uid])
+
+    function join() {
         // first see if there's a player UID already in the cookie
         const playerUid = Cookies.get("planningPokerPlayerUid");
         if (playerUid !== undefined) {
@@ -35,15 +40,24 @@ const Room = () => {
                     'Content-Type': 'application/json'
                 }
             }).then(response => {
+                if (!response.ok) { throw response }
                 return response.json()
             }).then(data => {
                 setName(data.name);
+            }).catch(error => {
+                console.error(error);
+                console.log(`lost connection or server disconnected. deleting the cookie and starting over`)
+                if (error.status == 404) {
+                    setNameModalOpened(true)
+                } else  if (error.status == 500) {
+                    setDisconnectModalOpened(true)
+                }
             });
         } else {
             // otherwise open the name modal 
             setNameModalOpened(true)
         }
-    }, []);
+    }
 
     function onNameModalSubmit(playerName: string) {
         // and then create the player on the server
@@ -54,12 +68,17 @@ const Room = () => {
         })
     }
 
-    useEffect(() => {
+    function connect() {
         if (params.roomId && uid) {
             const websocket = new WebSocket(`ws://${window.location.hostname}:8080/socket?room=${params.roomId}&playerUid=${uid}`);
+            websocket.addEventListener('close', event => {
+                console.error('lost socket')
+                setDisconnectModalOpened(true);
+            });
+
             setWebSocket(websocket);
         }
-    }, [uid])
+    }
 
     function updatePlayer(estimation: string) {
         console.log(`uid from cookie: ${JSON.stringify(Cookies.get())}`)
@@ -76,7 +95,7 @@ const Room = () => {
         }
     }
 
-    const clearAllEstimates = () => {
+    function clearAllEstimates() {
         fetch(`/api/room/${params.roomId}/estimates`, {
             method: 'DELETE',
             headers: {
@@ -86,11 +105,30 @@ const Room = () => {
         });
     }
 
+    async function createPlayer(playerName: string) {
+        // 1. if it doesn't exist, then create a new player on the server
+        type OmitId = Omit<RoomStatePlayer, "uid">;
+        const player: OmitId = {
+            "name": playerName,
+            "estimate": "None"
+        }
+        const response = await fetch(`/api/player`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(player)
+        });
+    
+        return response.json();
+    }
+
     if (ws !== undefined) {
         ws.onmessage = event => {
             const message = JSON.parse(event.data)
             if (message as BroadcastMessage && message?.roomState) {
-                console.log(`setting room state ${JSON.stringify(message.roomState)}`);
+                // console.log(`setting room state ${JSON.stringify(message.roomState)}`);
                 setRoomState(message.roomState);
             } else {
                 console.error(`Unknown message received: ${message}`);
@@ -99,7 +137,8 @@ const Room = () => {
     }
 
     return <>
-        <Text>Hi, your UID is: {Cookies.get('planningPokerPlayerUid')}</Text>
+
+        <DisconnectedModal opened={disconnectModalOpened} onClick={() => { setDisconnectModalOpened(false); join(); }} />
         <NameModal opened={nameModalOpened} playerName={name} onSubmit={onNameModalSubmit} />
 
         <Group position="apart">
@@ -137,23 +176,3 @@ const Room = () => {
 };
 
 export default Room;
-
-
-async function createPlayer(playerName: string) {
-    // 1. if it doesn't exist, then create a new player on the server
-    type OmitId = Omit<RoomStatePlayer, "uid">;
-    const player: OmitId = {
-        "name": playerName,
-        "estimate": "None"
-    }
-    const response = await fetch(`/api/player`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(player)
-    });
-
-    return response.json();
-}

@@ -31,10 +31,10 @@ export const initializeWebsocketServer = (server: Server): WebSocketServer => {
                         playerJoinRoom(roomId, playerUid)
                         connectPlayerSocket(url.searchParams.get("playerUid") as string, ws);
                         broadcastRoomState(roomId);
-                    }
-                }
+                    } 
+                }  
 
-                // do keepalive
+                // do keepalive 
 
                 wss.emit('connection', ws, request);
             });
