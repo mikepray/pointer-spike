@@ -4,15 +4,13 @@ import { useForm } from '@mantine/form';
 interface NameModalProperties {
     playerName: string;
     opened: boolean;
-    setNameModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
-    setName: React.Dispatch<React.SetStateAction<string>>;
+    onSubmit: (playerName: string) => void;
 }
 
 export const NameModal = (props: NameModalProperties) => {
 
     const handleSubmit = (values: typeof form.values) => {
-        props.setName(values.playerName);
-        props.setNameModalOpened(false);
+        props.onSubmit(values.playerName);
     }
 
     const form = useForm({
@@ -27,7 +25,7 @@ export const NameModal = (props: NameModalProperties) => {
     return <>
         <Modal
             opened={props.opened}
-            onClose={() => props.setNameModalOpened(false)}
+            onClose={() => {}}
             title="Introduce yourself!"
             withCloseButton={false}
             closeOnClickOutside={false}
@@ -46,7 +44,7 @@ export const NameModal = (props: NameModalProperties) => {
                 <Group position="right" mt="md">
                     <Button
                         variant="gradient"
-                        gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+                        color="turquoise"
                         uppercase
                         size="md"
                         type="submit"

@@ -5,6 +5,14 @@ Run `tsc --watch` in each top-level directory. Run `npm start` in `pointer-backe
 
 Shared library is hosted in npm
 
+visit at `localhost:3000`
+
+## Docker compose:
+
+`docker compose up`
+
+visit at `localhost`
+
 ## minikube
 
 have to tag the docker image. otherwise minikube will try to look for the image in docker hub. then need to load the images in minikube's cache:

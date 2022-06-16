@@ -3,3 +3,5 @@ pointer-backend/dist
 pointer-backend/.DS_Store
 shared/node_modules
 shared/dist
+
+.vscode

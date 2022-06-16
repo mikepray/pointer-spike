@@ -24,7 +24,7 @@ const JoinRoom = () => {
             <Container size="sm">
                 <Stack>
                     <TextInput
-                        label="Join Room"
+                        label="Join a Room"
                         description="Enter room name or number to join. If it doesn't exist, it will be created."
                         required
                         size="lg"
@@ -34,7 +34,7 @@ const JoinRoom = () => {
                     <Group position="right">
                         <Button
                             variant="gradient"
-                            gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+                            color="turquoise"
                             uppercase
                             size="md"
                             type="submit"

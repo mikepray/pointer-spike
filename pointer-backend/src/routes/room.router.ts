@@ -1,8 +1,6 @@
 import { Router} from 'express'
-import { deleteEstimates, updateRoomPlayer } from '../controllers/room.async.controller';
-import cors from 'cors';
+import { handleDeleteEstimates } from '../controllers/room.async.controller';
 
 const router = Router();
-router.patch('/:roomId/player/:playerUid', updateRoomPlayer);
-router.delete('/:roomId/estimates', deleteEstimates);
+router.delete('/:roomId/estimates', handleDeleteEstimates);
 export default router;

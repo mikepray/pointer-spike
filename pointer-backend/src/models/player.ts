@@ -1,14 +1,11 @@
-import { WebSocket } from 'ws';
 
 export class Player {
     uid: string;
-    roomId: string;
-    webSocketClient: WebSocket;
-    constructor(uid:string, roomId: string, webSocketClient: WebSocket) {//, nickname: string = "Visitor", estimation: string = "") {
+    name: string;
+    estimate: string | undefined;
+    constructor(uid:string, name: string, estimate: string | undefined = undefined) {//, nickname: string = "Visitor", estimation: string = "") {
         this.uid = uid;
-        this.roomId = roomId;
-        this.webSocketClient = webSocketClient;
-        // this.nickname = nickname;
-        // this.estimation = estimation;
+        this.name = name;
+        this.estimate = estimate;
     }
-}
+}   

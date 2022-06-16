@@ -13,6 +13,8 @@ COPY package*.json ./
 
 RUN /usr/local/bin/npm install
 
+RUN ./node_modules/typescript/bin/tsc -p ./tsconfig.json
+
 # If you are building your code for production
 # RUN npm ci --only=production
 
